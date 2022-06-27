@@ -2,6 +2,7 @@ package com.example.chatting_app;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -30,7 +31,8 @@ public class MainActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() { //회원가입 페이지로 넘어간 후 정보 처리, 가입 성공 후 이름, ID, PW는 거기서 DB로 연동하든 메인페이지로 가져와서 처리하든 해결
             @Override
             public void onClick(View v) {
-                finish();
+                Intent intent = new Intent(getApplicationContext(), SignUpPageActivity.class);
+                startActivity(intent);
             }
         });
     }

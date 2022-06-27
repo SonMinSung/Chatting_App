@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:orientation="vertical"
-    android:padding="10dp"
+    android:padding="20dp"
     android:background="#F1E0BF">
 
     <LinearLayout
@@ -95,6 +95,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:text="로그인"
+            
             android:background="@drawable/button"
             android:id="@+id/btnSignIn"/>
         <Button
