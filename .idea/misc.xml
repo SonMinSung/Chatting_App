@@ -3,8 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/User/AndroidStudioProjects/Chatting_App/app/src/main/res/drawable/button.xml" value="0.1" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Chatting_App/app/src/main/res/drawable/buttonimage.xml" value="0.1" />
-        <entry key="..\:/Users/User/AndroidStudioProjects/Chatting_App/app/src/main/res/layout/activity_main.xml" value="0.17" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Chatting_App/app/src/main/res/layout/activity_main.xml" value="0.33" />
       </map>
     </option>
   </component>
