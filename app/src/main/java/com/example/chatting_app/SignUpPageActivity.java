@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -17,8 +18,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class SignUpPageActivity extends AppCompatActivity {
+    TextView txtIdPw;
     EditText edtId, edtPw, edtName;
-    Button btnSignUp2;
+    Button btnSignUp, btnSignIn;
     private FirebaseAuth mAuth;
 
     @Override
@@ -28,35 +30,33 @@ public class SignUpPageActivity extends AppCompatActivity {
 
         edtId = findViewById(R.id.edtId);
         edtPw = findViewById(R.id.edtPw);
-        edtName = findViewById(R.id.edtName);
-        btnSignUp2 = findViewById(R.id.btnSignUp2);
-
+        //edtName = findViewById(R.id.edtName); id/pw 만 받음
+        btnSignUp = findViewById(R.id.btnSignUp);
+        btnSignIn = findViewById(R.id.btnSignIn);
+        txtIdPw = findViewById(R.id.txtIdPw);
         mAuth = FirebaseAuth.getInstance();
 
-        btnSignUp2.setOnClickListener(new View.OnClickListener() {
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String email, password;
+
                 email = edtId.getText().toString();
                 password = edtPw.getText().toString();
 
-               createAccount(email, password);
-                /*
-                if (edtId.length() <6){
-                    Toast.makeText(getApplicationContext(), "아이디의 최소 길이는 6글자입니다.", Toast.LENGTH_SHORT).show();
-                    if (edtPw.length() > 20 | edtId.length() <8){
-                        Toast.makeText(getApplicationContext(), "비밀번호의 최소 길이는 8글자입니다.", Toast.LENGTH_SHORT).show();
-                        if (edtName.length() == 0)Toast.makeText(getApplicationContext(), "이름을 입력하세요", Toast.LENGTH_SHORT).show();
-                    }
+                if (email.length() ==0 | password.length() ==0){
+                    txtIdPw.setText("이메일과 비밀번호를 입력하세요.");
+                    txtIdPw.setVisibility(View.VISIBLE);
                 }
+                else if (password.length() < 6)
+                    txtIdPw.setText("비밀번호는 최소 여섯 자리 입니다.");
                 else{
-                    Toast.makeText(getApplicationContext(), "회원가입 성공", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent);
+                    txtIdPw.setVisibility(View.INVISIBLE);
+                    createAccount(email, password);
                 }
-                */
             }
         });
+
     }
 
     private void createAccount(String email, String password) {
@@ -70,6 +70,8 @@ public class SignUpPageActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "가입 성공", Toast.LENGTH_SHORT).show();
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(getApplicationContext(), "가입 실패.",
@@ -82,6 +84,5 @@ public class SignUpPageActivity extends AppCompatActivity {
                     }
                 });
     }
-
 
 }
