@@ -6,19 +6,28 @@
     android:layout_height="match_parent"
     tools:context=".ChattingPageActivity"
     android:orientation="vertical"
-    android:gravity="center"
-    android:background="#F1E0BF">
+    android:background="#F1E0BF"
+    android:gravity="bottom">
 
-    <TextView
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="로그인 성공 시 나오는 화면"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="로그아웃"
-        android:id="@+id/btnSignOut"
-        android:background="@drawable/button"/>
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/btnSend"
+            android:hint="내용을 입력하세요."
+            android:textColorHint="#000000"
+            android:id="@+id/edtMsg"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="전송"
+            android:id="@+id/btnSend"
+            android:background="@drawable/button"/>
+    </RelativeLayout>
+
 
 </LinearLayout>
