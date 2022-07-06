@@ -50,6 +50,7 @@ public class SignUpPageActivity extends AppCompatActivity {
         imgProfile = findViewById(R.id.imgProfile);
         mAuth = FirebaseAuth.getInstance();
 
+
         imgProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,29 +83,7 @@ public class SignUpPageActivity extends AppCompatActivity {
         });
 
 
-/*
-        btnSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email, password;
 
-                email = edtId.getText().toString();
-                password = edtPw.getText().toString();
-
-                if (email.length() ==0 | password.length() ==0){
-                    txtIdPw.setText("이메일과 비밀번호를 입력하세요.");
-                    txtIdPw.setVisibility(View.VISIBLE);
-                }
-                else if (password.length() < 6)
-                    txtIdPw.setText("비밀번호는 최소 여섯 자리 입니다.");
-                elseu
-                    txtIdPw.setVisibility(View.INVISIBLE);
-                    createAccount(email, password);
-                }
-            }
-        });
-
- */
 
 
     }
@@ -115,44 +94,41 @@ public class SignUpPageActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
                         String uid = task.getResult().getUser().getUid();
+                        if (task.isSuccessful()){
+                            FirebaseStorage.getInstance().getReference().child("userImages").child(uid).putFile(imgUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                                    String imgUrl = task.getResult().getStorage().getDownloadUrl().toString();
 
-                        FirebaseStorage.getInstance().getReference().child("userImages").child(uid).putFile(imgUri);
-                        UserModel userModel = new UserModel();
-                        userModel.userName = edtName.getText().toString();
-                        userModel.profileImageUrl = imgUri.toString();
-                        FirebaseDatabase.getInstance().getReference().child("users").child(uid).setValue(userModel);
-                    }
 
-                });
-    }
-/*
 
-    private void createAccount(String email, String password) {
-        // [START create_user_with_email]
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Toast.makeText(getApplicationContext(), "가입 성공", Toast.LENGTH_SHORT).show();
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
+                                    UserModel userModel = new UserModel();
+                                    userModel.userName = edtName.getText().toString();
+                                    FirebaseDatabase.getInstance().getReference().child("users").child(uid).setValue(userModel);
+                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            });
+                            /*
+                            UserModel userModel = new UserModel();
+                            userModel.userName = edtName.getText().toString();
+
+
+
+                            FirebaseDatabase.getInstance().getReference().child("users").child(uid).setValue(userModel);
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(intent);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(getApplicationContext(), "가입 실패.",
-                                    Toast.LENGTH_SHORT).show();
-                            updateUI(null);
+                            finish();
+                            */
+                        }else {
+                            Toast.makeText(getApplicationContext(), "가입 실패.", Toast.LENGTH_SHORT).show();
                         }
                     }
 
-                    private void updateUI(FirebaseUser user) {
-                    }
                 });
     }
-*/
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == PICK_FROM_ALBUM && resultCode == RESULT_OK){

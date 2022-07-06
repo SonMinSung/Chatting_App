@@ -65,6 +65,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/edtPw"
             android:maxLength="20"
+            android:inputType="textPassword"
             android:hint="비밀번호는 최소 6자리여야합니다."
             android:layout_marginBottom="20dp"/>
     </LinearLayout>
@@ -86,7 +87,8 @@
         android:id="@+id/txtIdPw"
         android:textSize="25sp"
         android:textColor="#ff0000"
-        android:visibility="invisible"/>
+        android:visibility="invisible" />
+
 
 
 </LinearLayout>

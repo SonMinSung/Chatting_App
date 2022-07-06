@@ -7,8 +7,12 @@
         <entry key="..\:/Users/User/AndroidStudioProjects/Chatting_App/app/src/main/res/drawable/buttonimage.xml" value="0.1" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Chatting_App/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Chatting_App/app/src/main/res/layout/activity_main_home.xml" value="0.26874366767983787" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Chatting_App/app/src/main/res/layout/chat_main_page.xml" value="0.25" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Chatting_App/app/src/main/res/layout/chatting_page.xml" value="0.25" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Chatting_App/app/src/main/res/layout/fragment_people.xml" value="0.25" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Chatting_App/app/src/main/res/layout/item_friend.xml" value="0.17592592592592593" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Chatting_App/app/src/main/res/layout/sign_up_page.xml" value="0.2951653944020356" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Chatting_App/app/src/main/res/menu/bottom_navigation_main.xml" value="0.2851851851851852" />
       </map>
     </option>
   </component>

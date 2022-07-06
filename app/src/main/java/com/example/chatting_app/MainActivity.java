@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     EditText edtId, edtPw;
     Button btnSignUp, btnSignIn;
     private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener authStateListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +35,10 @@ public class MainActivity extends AppCompatActivity {
         btnSignIn = findViewById(R.id.btnSignIn);
 
         mAuth = FirebaseAuth.getInstance();
+        mAuth.signOut();
 
-        btnSignIn.setOnClickListener(new View.OnClickListener() { //로그인 버튼이 눌리면 DB에서 정보를 읽어와 ID, PW가 같은 경우 로그인 성공 아니면 ID또는 PW가 틀립니다. Toast 하기
+
+        btnSignIn.setOnClickListener(new View.OnClickListener() { //로그인 정보 확인
             @Override
             public void onClick(View v) {
                 String email, password;
@@ -44,14 +47,28 @@ public class MainActivity extends AppCompatActivity {
                 signIn(email, password);
             }
         });
-        btnSignUp.setOnClickListener(new View.OnClickListener() { //회원가입 페이지로 넘어간 후 정보 처리, 가입 성공 후 이름, ID, PW는 거기서 DB로 연동하든 메인페이지로 가져와서 처리하든 해결
+        btnSignUp.setOnClickListener(new View.OnClickListener() { //회원가입 페이지로 이동
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), SignUpPageActivity.class);
                 startActivity(intent);
             }
         });
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = mAuth.getCurrentUser();
+                if (user != null){ //로그인
+                    Intent intent2 = new Intent(getApplicationContext(), ChatMainPageActivity.class);
+                    startActivity(intent2);
+                    finish();
+                }else{ //로그아웃
+
+                }
+            }
+        };
     }
+
 
     private void signIn(String email, String password) {
         // [START sign_in_with_email]
@@ -59,28 +76,27 @@ public class MainActivity extends AppCompatActivity {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-
-                if (task.isSuccessful()) {
-                    // Sign in success, update UI with the signed-in user's information
-                    // Log.d(TAG, "signInWithEmail:success");
-                    FirebaseUser user = mAuth.getCurrentUser();
-                    updateUI(user);
-                    Intent intent2 = new Intent(getApplicationContext(), ChattingPageActivity.class);
-                    startActivity(intent2);
-
-                } else {
+                if (!task.isSuccessful()) {
                     // If sign in fails, display a message to the user.
                     // Log.w(TAG, "signInWithEmail:failure", task.getException());
-                    Toast.makeText(getApplicationContext(), "로그인 실패.",
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "로그인 실패.", Toast.LENGTH_SHORT).show();
                     updateUI(null);
                 }
             }
             private void updateUI(FirebaseUser user) {
             }
         });
-        // [END sign_in_with_email]
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(authStateListener);
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mAuth.removeAuthStateListener(authStateListener);
     }
 }
