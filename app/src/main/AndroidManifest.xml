@@ -12,10 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Chatting_App">
         <activity
-            android:name=".ChatMainPageActivity"
+            android:name=".chat.MessageActivity"
             android:exported="false" />
         <activity
-            android:name=".ChattingPageActivity"
+            android:name=".ChatMainPageActivity"
             android:exported="false" />
         <activity
             android:name=".SignUpPageActivity"

@@ -16,8 +16,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.chatting_app.model.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,14 +28,16 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 public class SignUpPageActivity extends AppCompatActivity {
+    private UserModel userModel = new UserModel();
     private static final int PICK_FROM_ALBUM = 10;
-    TextView txtIdPw;
+    TextView txtIdPw, txtTest;
     EditText edtId, edtPw, edtName;
     Button btnSignUp, btnSignIn;
-    ImageView imgProfile;
+    ImageView imgProfile, imgTest;
     Uri imgUri;
     private FirebaseAuth mAuth;
 
@@ -48,7 +53,11 @@ public class SignUpPageActivity extends AppCompatActivity {
         btnSignIn = findViewById(R.id.btnSignIn);
         txtIdPw = findViewById(R.id.txtIdPw);
         imgProfile = findViewById(R.id.imgProfile);
+
+
+
         mAuth = FirebaseAuth.getInstance();
+
 
 
         imgProfile.setOnClickListener(new View.OnClickListener() {
@@ -65,12 +74,14 @@ public class SignUpPageActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String email, password;
                 email = edtId.getText().toString();
                 password = edtPw.getText().toString();
 
-                if (email.length() ==0 | password.length() ==0){
-                    txtIdPw.setText("이메일과 비밀번호를 입력하세요.");
+
+                if (email.length() ==0 | password.length() ==0 | imgUri.toString().length() == 0){
+                    txtIdPw.setText("모든 정보를 입력하세요.");
                     txtIdPw.setVisibility(View.VISIBLE);
                 }
                 else if (password.length() < 6)
@@ -95,32 +106,25 @@ public class SignUpPageActivity extends AppCompatActivity {
 
                         String uid = task.getResult().getUser().getUid();
                         if (task.isSuccessful()){
-                            FirebaseStorage.getInstance().getReference().child("userImages").child(uid).putFile(imgUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+
+                            FirebaseStorage.getInstance("gs://chatting-app-db-71e81.appspot.com").getReference().child("userImages").child(uid).putFile(imgUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                                    String imgUrl = task.getResult().getStorage().getDownloadUrl().toString();
-
-
-
-                                    UserModel userModel = new UserModel();
-                                    userModel.userName = edtName.getText().toString();
-                                    FirebaseDatabase.getInstance().getReference().child("users").child(uid).setValue(userModel);
-                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
+                                    task.getResult().getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            userModel.uid = uid;
+                                            userModel.userName = edtName.getText().toString();
+                                            userModel.profileImageUrl = uri.toString();
+                                            FirebaseDatabase.getInstance().getReference().child("users").child(uid).setValue(userModel);
+                                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    });
                                 }
                             });
-                            /*
-                            UserModel userModel = new UserModel();
-                            userModel.userName = edtName.getText().toString();
 
-
-
-                            FirebaseDatabase.getInstance().getReference().child("users").child(uid).setValue(userModel);
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                            startActivity(intent);
-                            finish();
-                            */
                         }else {
                             Toast.makeText(getApplicationContext(), "가입 실패.", Toast.LENGTH_SHORT).show();
                         }

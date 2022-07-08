@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ChattingPageActivity"
+    tools:context=".chat.MessageActivity"
     android:orientation="vertical"
     android:background="#F1E0BF"
     android:gravity="bottom">
@@ -28,6 +28,5 @@
             android:id="@+id/btnSend"
             android:background="@drawable/button"/>
     </RelativeLayout>
-
 
 </LinearLayout>
